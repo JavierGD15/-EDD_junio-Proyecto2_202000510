@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menù con tabs | Html - Css</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    
+    
+</head>
+<body>
+    <a href="../index.html" class="cerrar">Cerrar Sesión</a>
+     
+       
+    <div class="container" >
+        <div class="lbl-menu" >
+            <label for="radio1">Clientes</label>
+            <label for="radio2">Películas</label>
+            <label for="radio3">Actores</label>
+            <label for="radio4">Categorías</label>
+        </div>
+        
+        <div class="content">
+           
+            <input type="radio" name="radio" id="radio1" checked>
+            <div class="tab1" id="lienzo2" >
+                <h2>Clientes</h2>             
+                <br>
+                <script src="//d3js.org/d3.v5.min.js"></script>
+                <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+                <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+                <script type="text/javascript" src="../js/lista_usuarios.js"></script>                
+                <br>
+                <form  id="formulario" >    
+                    
+                    <input type="file"   type="file" id="file" accept=".json">
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                </form>                                   
+            </div>
+
+            
+            <input type="radio" name="radio" id="radio2">
+          
+
+            <div class="tab2" id="lienzo1">
+                <h2>Peliculas</h2>                
+                <script src="//d3js.org/d3.v5.min.js"></script>
+                <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+                <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+                <script type="text/javascript" src="../js/arbol_avl.js"></script>                
+                <br>
+                <form  id="formulario" >                        
+                    <input type="file"  type="file" id="file1" accept=".json">
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                </form>  
+
+            </div>               
+
+
+            <input type="radio" name="radio" id="radio3">
+            <div class="tab3" id="lienzo4">
+                <h2>Actores</h2>                
+                <script src="//d3js.org/d3.v5.min.js"></script>
+                <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+                <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+                <script type="text/javascript" src="../js/arbol_binario.js"></script> 
+                <form  id="formulario" >                        
+                    <input type="file"   type="file" id="file4" accept=".json">
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                </form>     
+            </div>
+            
+            <input type="radio" name="radio" id="radio4">      
+            <div class="tab4" id="lienzo3">
+                <h2>Categorías</h2>                
+                <script src="//d3js.org/d3.v5.min.js"></script>
+                <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+                <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+                <script type="text/javascript" src="../js/libros_dispersa.js"></script>                
+                <br>
+                <form  id="formulario" >                        
+                    <input type="file"   type="file" id="file2" accept=".json">
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                </form>  
+
+            </div>
+
+            
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
