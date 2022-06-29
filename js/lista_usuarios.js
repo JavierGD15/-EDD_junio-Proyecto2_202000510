@@ -95,18 +95,19 @@ formulario.addEventListener('submit', function(e){
     }
     else{        
         var opcion = false;
-        let json_usuarios = JSON.parse(localStorage.getItem("json_usuarios"));
+        let json_usuarios = JSON.parse(localStorage.getItem("json_clientes"));
         if(json_usuarios != null){
             for (var i = 0; i < json_usuarios.length; i++) {
                 if(datos.get("user") == json_usuarios[i].nombre_usuario && datos.get("contraseña") == json_usuarios[i].contrasenia){  
                     if(datos.get("checkbox") == "on"){                        
-                        location.href = "templates/admin.html";
-                        opcion = true;
-                    }else{
+                    location.href = "templates/admin.html";
+                    opcion = true;
+                    }
+                    else{
                     opcion = true;
                     localStorage.setItem("usuario_activo", json_usuarios[i].nombre_usuario);
-                    location.href = "templates/libros_inicio.html";
-                    }   
+                    location.href = "templates/tienda.html";
+                }
                 }
             }
             if(opcion == false){
