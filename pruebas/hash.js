@@ -1,3 +1,4 @@
+var dato = 10;
 class Nodo_tabla {
     constructor(id_categoria, company) {
         this.posicion = null;
@@ -51,7 +52,7 @@ class Lista_tabla {
 
     calcular_insercion(id_categoria, company) {
         
-        var calculo =  id_categoria % 30;
+        var calculo =  id_categoria % dato;
         var resultado = this.buscar_posicion(calculo);
         var finalizar = false;
         while(finalizar == false){
@@ -108,25 +109,18 @@ class Lista_tabla {
 }
 
 var lista = new Lista_tabla();
-for (let index = 0; index < 30; index++) {
+for (let index = 0; index < dato; index++) {
     lista.insertar();            
 }
-lista.calcular_insercion(15, "google");
-lista.calcular_insercion(35, "facebook");
-lista.calcular_insercion(68, "twitter");
-lista.calcular_insercion(54, "instagram");
-lista.calcular_insercion(21, "youtube");
-lista.calcular_insercion(85, "linkedin");
+lista.calcular_insercion(5, "google");
+lista.calcular_insercion(10, "facebook");
+lista.calcular_insercion(15, "twitter");
+lista.calcular_insercion(20, "instagram");
+lista.calcular_insercion(25, "youtube");
+lista.calcular_insercion(30, "linkedin");
 lista.calcular_insercion(35, "pinterest");
-lista.calcular_insercion(36, "tumblr");
-lista.calcular_insercion(32, "reddit");
-lista.calcular_insercion(10, "snapchat");
-lista.calcular_insercion(25, "vine");
-lista.calcular_insercion(35, "flickr");
-lista.calcular_insercion(68, "quora");
-lista.calcular_insercion(68, "github");
-lista.calcular_insercion(9, "bitbucket");
-lista.calcular_insercion(54, "stackoverflow");
-lista.calcular_insercion(87, "bitly");
+lista.calcular_insercion(40, "tumblr");
+lista.calcular_insercion(45, "reddit");
+lista.calcular_insercion(50, "snapchat");
 lista.graficar_lista();
 

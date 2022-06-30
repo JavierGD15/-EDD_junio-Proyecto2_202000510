@@ -50,36 +50,57 @@ class Lista_tabla {
     }
 
     calcular_insercion(id_categoria, company) {
-        var resultado = 30 % id_categoria;
-        var resultado = this.buscar_posicion(resultado);
+        
+        var calculo =  id_categoria % 20;
+        var resultado = this.buscar_posicion(calculo);
         var finalizar = false;
         while(finalizar == false){
-            if (resultado.id_categoria == null) {
-                resultado.id_categoria = id_categoria;
-                resultado.company = company;
-                finalizar = true;
-            }else{
-                resultado = resultado.siguiente;
-            }
+                        
+                if(resultado.siguiente == null){
+                    resultado.siguiente = new Nodo_tabla(id_categoria, company);                    
+                    resultado.siguiente.posicion = resultado.posicion;                    
+                    finalizar = true;
+                }
+                resultado = resultado.siguiente;            
         }
     }
 
     graficar_lista() {
-        var codigodot = "digraph G{\nlabel=\" Clasificación Usuarios \";\n node [shape=box];\n";
+        var codigodot = "digraph G{\nlabel=\" Tabla Hash \";\n node [shape=box];\n";
         var actual = this.primero;
         var recto = "";
+        var filas = "";
         while (actual != null) {
-            codigodot += actual.id_categoria + " [label=\"" + actual.company + "\"];";
+            codigodot += actual.posicion + " [label=\"" +"Posición: "+actual.posicion  + "\"];";
             if (actual.abajo != null) {
-                recto += actual.id_categoria + " -> " + actual.abajo.id_categoria + ";";
+                recto += actual.posicion + " -> " + actual.abajo.posicion + ";\n";
             }
+
+            //conexion recta 
+            var ayuda_columnas = actual.siguiente;
+            var y = 60;
+            if(ayuda_columnas != null){
+                filas += actual.posicion + " -> " + ayuda_columnas.posicion+""+ y + ";\n";
+                while(ayuda_columnas != null){
+                    
+                    codigodot += ayuda_columnas.posicion+""+ y + " [label=\"" + ayuda_columnas.id_categoria+"\n"+ ayuda_columnas.company  + "\"];";
+                    if(ayuda_columnas.siguiente != null){
+                        filas += ayuda_columnas.posicion+""+ y + " -> " + ayuda_columnas.posicion+""+ (y+1) + ";\n";                        
+                    }
+                    ayuda_columnas = ayuda_columnas.siguiente;
+                    y++;
+                }
+            }
+
+            codigodot += "{rank=same;\n"+filas+"\n}\n";
+            filas = "";
             actual = actual.abajo;
         }
-        codigodot += "}";
-        codigodot += "{rank=same;\n"+recto+"\n}\n";
+        codigodot += "\n"+recto+"\n";
+        codigodot += "{rank=same;\n"+filas+"\n}\n";
         codigodot += "}";
         console.log(codigodot);
-        d3.select("#lienzo2").graphviz()
+        d3.select("#lienzo3").graphviz()
         .renderDot(codigodot)
     }
 
@@ -87,3 +108,33 @@ class Lista_tabla {
 }
 
 var lista = new Lista_tabla();
+for (let index = 0; index < 20; index++) {
+    lista.insertar();            
+}
+
+var formulario = document.getElementById("lienzo3");
+
+formulario.addEventListener('submit', function(e){
+    e.preventDefault();
+    
+    //recibir documento de formulario
+    let file = document.querySelector('#file5');
+    let reader = new FileReader();
+    reader.readAsText(file.files[0]);
+    reader.onload = function(e){
+        let contenido = e.target.result;
+        var json = JSON.parse(contenido);
+        localStorage.setItem("json_clasificaciones", contenido);
+        
+        for (var i = 0; i < json.length; i++) {
+            
+                lista.calcular_insercion(json[i].id_categoria, json[i].company);
+        
+
+        }
+        lista.graficar_lista();
+        
+    }
+})
+
+

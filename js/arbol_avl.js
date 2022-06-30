@@ -196,6 +196,49 @@ class Node {
       d3.select("#lienzo1").graphviz()
       .renderDot(codigodot)
   }
+  obtetener_nodo(valor){
+          var inicio = valor;
+          let tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
+
+          //insertar imagen
+          let cellImg = tblDatos.insertCell(-1);
+          let img = document.createElement("img");
+          img.src = "../img/poster.jpg";
+          img.width = "200";
+          img.height = "200";
+          cellImg.appendChild(img);
+          
+          let cell2 = tblDatos.insertCell(-1);
+          let cell3 = tblDatos.insertCell(-1);              
+          
+          cell2.innerHTML = inicio.nombre_pelicula;
+          cell3.innerHTML = inicio.descripcion;
+          
+          //enviar boton
+          let cell7 = tblDatos.insertCell(-1);
+          let btn = document.createElement("button");
+          btn.innerHTML = "Informacion";
+          btn.setAttribute("type", "submit");        
+          btn.setAttribute("onclick", "comprar_libros()");
+          cell7.appendChild(btn);
+
+          let cell8 = tblDatos.insertCell(-1);
+          let btn1 = document.createElement("button");
+          btn1.innerHTML = "Alquilar";
+          btn1.setAttribute("type", "submit");         
+          btn1.setAttribute("onclick", "pila()");
+          cell8.appendChild(btn1);    
+
+          let cell4 = tblDatos.insertCell(-1);            
+          cell4.innerHTML = "Q"+inicio.precion_Q;
+    if(inicio.izquierda != null){
+      this.obtetener_nodo(inicio.izquierda);
+    }
+    if(inicio.derecha != null){
+      this.obtetener_nodo(inicio.derecha);
+    }
+
+  }
   
   graficar_lados(nodo){
       this.texto += nodo.valor + " [label=\"" + nodo.valor + "\"];\n";
@@ -208,10 +251,89 @@ class Node {
           this.graficar_lados(nodo.derecha);
       }      
   }
+
+  obtener_local(){
+    //obtener localstorage
+    var local = localStorage.getItem("json_peliculas");
+    var json = JSON.parse(local);            
+    for (var i = 0; i < json.length; i++) {          
+      this.insertNode(json[i].id_pelicula);   
+          
+    }
+   
+    for (var i = 0; i < json.length; i++) {        
+      
+      this.agregar_info(this.root, json[i].id_pelicula, json[i].nombre_pelicula, json[i].descripcion, json[i].puntuacion_star, json[i].precion_Q);      
+    }
+    
+    this.iniciar_tabla();
+
+  }
+
+  agregar_info(nodo,id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precion_Q){
+    var inicio = nodo;
+    
+    if(inicio.valor == id_pelicula){
+      inicio.id_pelicula = id_pelicula;
+      inicio.nombre_pelicula = nombre_pelicula;
+      inicio.descripcion = descripcion;
+      inicio.puntuacion_star = puntuacion_star;
+      inicio.precion_Q = precion_Q;
+    }else{
+      if(inicio.izquierda != null){
+        this.agregar_info(inicio.izquierda, id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precion_Q);
+      }
+      if(inicio.derecha != null){
+        this.agregar_info(inicio.derecha, id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precion_Q);
+      }
+    }
+  }
+
+  iniciar_tabla(){    
+        
+          var inicio = this.root; 
+          console.log(inicio);         
+          let tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
+          //insertar imagen
+          let cellImg = tblDatos.insertCell(-1);
+          let img = document.createElement("img");
+          img.src = "../img/poster.jpg";
+          img.width = "200";
+          img.height = "200";
+          cellImg.appendChild(img);
+          
+          let cell2 = tblDatos.insertCell(-1);
+          let cell3 = tblDatos.insertCell(-1);              
+          
+          cell2.innerHTML = inicio.nombre_pelicula;
+          cell3.innerHTML = inicio.descripcion;
+          
+          //enviar boton
+          let cell7 = tblDatos.insertCell(-1);
+          let btn = document.createElement("button");
+          btn.innerHTML = "Informacion";
+          btn.setAttribute("type", "submit");        
+          btn.setAttribute("onclick", "comprar_libros()");
+          cell7.appendChild(btn);
+
+          let cell8 = tblDatos.insertCell(-1);
+          let btn1 = document.createElement("button");
+          btn1.innerHTML = "Alquilar";
+          btn1.setAttribute("type", "submit");         
+          btn1.setAttribute("onclick", "pila()");
+          cell8.appendChild(btn1);    
+
+          let cell4 = tblDatos.insertCell(-1);            
+          cell4.innerHTML = "Q"+inicio.precion_Q;
+
+          this.obtetener_nodo(inicio.izquierda);
+          this.obtetener_nodo(inicio.derecha);
+
+  }
   
   }
 
-  
+
 var formulario = document.getElementById("lienzo1");
 formulario.addEventListener('submit', function(e){
     e.preventDefault();
@@ -222,21 +344,23 @@ formulario.addEventListener('submit', function(e){
     reader.readAsText(file.files[0]);
     reader.onload = function(e){
         //guardar documento        
-
+        var arbol = new AVLTree();
         let contenido = e.target.result;
         var json = JSON.parse(contenido);
         
         //guarda el json en el localStorage
         localStorage.setItem("json_peliculas", contenido);
         
-        var arbol = new AVLTree();
+        
         for (var i = 0; i < json.length; i++) {          
-          arbol.insertNode(json[i].id_pelicula, json[i].nombre_pelicula, json[i].descripcion, json[i].puntuacion_star, json[i].precion_Q);    
+          arbol.insertNode(json[i].id_pelicula);    
         }
         arbol.graficar();     
         
     }
 
 })
+var arbol1 = new AVLTree();
+arbol1.obtener_local();
 
-  
+
