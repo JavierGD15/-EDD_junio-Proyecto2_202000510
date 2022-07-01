@@ -10,7 +10,6 @@ class Nodo_tabla {
 }
 
 class Lista_tabla {
-
     constructor() {
         this.primero = null;
         this.ultimo = null;  

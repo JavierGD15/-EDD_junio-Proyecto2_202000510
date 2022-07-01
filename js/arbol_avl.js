@@ -218,8 +218,8 @@ class Node {
           let cell7 = tblDatos.insertCell(-1);
           let btn = document.createElement("button");
           btn.innerHTML = "Informacion";
-          btn.setAttribute("type", "submit");        
-          btn.setAttribute("onclick", "comprar_libros()");
+          btn.setAttribute("type", "submit");    
+          btn.setAttribute("onclick", "Informacion("+inicio.id_pelicula+")");
           cell7.appendChild(btn);
 
           let cell8 = tblDatos.insertCell(-1);
@@ -239,6 +239,8 @@ class Node {
     }
 
   }
+
+  
   
   graficar_lados(nodo){
       this.texto += nodo.valor + " [label=\"" + nodo.valor + "\"];\n";
@@ -289,10 +291,40 @@ class Node {
     }
   }
 
-  iniciar_tabla(){    
-        
-          var inicio = this.root; 
-          console.log(inicio);         
+  buscar_nodo_devolver(nodo,id_pelicula){
+    var inicio = nodo;
+    console.log(inicio.valor + " " + id_pelicula);
+   
+    
+    if(inicio.valor == id_pelicula){
+      this.gurdar_info(inicio);
+    }else{
+      if(inicio.izquierda != null){
+        this.buscar_nodo_devolver(inicio.izquierda, id_pelicula);
+      }
+      if(inicio.derecha != null){
+        this.buscar_nodo_devolver(inicio.derecha, id_pelicula);
+      }
+    }
+  }
+
+  buscar_nodo(nodo,id_pelicula){
+    var inicio = nodo;    
+    
+    if(inicio.valor == id_pelicula){
+      return inicio;
+    }else{
+      if(inicio.izquierda != null){
+        this.buscar_nodo(inicio.izquierda, id_pelicula);
+      }
+      if(inicio.derecha != null){
+        this.buscar_nodo(inicio.derecha, id_pelicula);
+      }
+    }
+  }
+
+  iniciar_tabla(){            
+          var inicio = this.root;   
           let tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
           //insertar imagen
           let cellImg = tblDatos.insertCell(-1);
@@ -313,7 +345,7 @@ class Node {
           let btn = document.createElement("button");
           btn.innerHTML = "Informacion";
           btn.setAttribute("type", "submit");        
-          btn.setAttribute("onclick", "comprar_libros()");
+          btn.setAttribute("onclick", "Informacion("+inicio.id_pelicula+")");
           cell7.appendChild(btn);
 
           let cell8 = tblDatos.insertCell(-1);
@@ -330,9 +362,104 @@ class Node {
           this.obtetener_nodo(inicio.derecha);
 
   }
+  llenar_info(){
+    var local = localStorage.getItem("json_info");
+    
+    var json = JSON.parse(local);            
+    var nodo = this.buscar_nodo(this.root, json[0].id_pelicula);
+    
+    
+    let tblDatos = document.getElementById("tblinfo").insertRow(-1);    
+    
+    let cell1 = tblDatos.insertCell(-1);    
+    let cell3 = tblDatos.insertCell(-1);     
+    
+   
+    
+    cell1.innerHTML = nodo.nombre_pelicula;
+    cell3.innerHTML = nodo.descripcion;
+
+    if(nodo.puntuacion_star == 1){
+    let cellImg = tblDatos.insertCell(-1);
+    let img = document.createElement("img");
+    img.src = "../img/one.png";
+    img.width = "300";
+    img.height = "80";
+    cellImg.appendChild(img);
+    } else if(nodo.puntuacion_star == 2){
+    let cellImg = tblDatos.insertCell(-1);
+    let img = document.createElement("img");
+    img.src = "../img/two.png";
+    img.width = "300";
+    img.height = "80";
+    cellImg.appendChild(img);
+    } else if(nodo.puntuacion_star == 3){
+    let cellImg = tblDatos.insertCell(-1);
+    let img = document.createElement("img");
+    img.src = "../img/three.png";
+    img.width = "300";
+    img.height = "80";
+    cellImg.appendChild(img);
+    } else if(nodo.puntuacion_star == 4){
+    let cellImg = tblDatos.insertCell(-1);
+    let img = document.createElement("img");
+    img.src = "../img/four.png";
+    img.width = "300";
+    img.height = "80";
+    cellImg.appendChild(img);
+    } else if(nodo.puntuacion_star == 5){
+    let cellImg = tblDatos.insertCell(-1);
+    let img = document.createElement("img");
+    img.src = "../img/five.png";
+    img.width = "300";
+    img.height = "80";
+    cellImg.appendChild(img);
+    }
+    
+    let cell8 = tblDatos.insertCell(-1);
+    let btn1 = document.createElement("button");
+    btn1.innerHTML = "Alquilar";
+    btn1.setAttribute("type", "submit");         
+    btn1.setAttribute("onclick", "pila()");
+    cell8.appendChild(btn1);    
+
+    let cell4 = tblDatos.insertCell(-1);            
+    cell4.innerHTML = "Q"+nodo.precion_Q;
+
+    
+  }
+
+  gurdar_info(nodo){    
+    var enviar =[]
+    var enviar1 ={}
+    enviar1.id_pelicula = nodo.id_pelicula;
+    enviar1.nombre_pelicula = nodo.nombre_pelicula;
+    enviar1.descripcion = nodo.descripcion;
+    enviar1.puntuacion_star = nodo.puntuacion_star;
+    enviar1.precion_Q = nodo.precion_Q;    
+    enviar.push(enviar1);
+    localStorage.setItem("json_info", JSON.stringify(enviar));
+    location.href = "../templates/vista_pelicula.html";
   
   }
 
+
+  
+  }
+  var arbol1 = new AVLTree();
+  try{
+    
+  arbol1.obtener_local();
+  }catch(e){}
+  try{
+    
+     arbol1.llenar_info();
+    }catch(e){}
+
+  try{
+      arbol1.cargar_comentarios();
+    }catch(e){}
+ 
 
 var formulario = document.getElementById("lienzo1");
 formulario.addEventListener('submit', function(e){
@@ -360,7 +487,12 @@ formulario.addEventListener('submit', function(e){
     }
 
 })
-var arbol1 = new AVLTree();
-arbol1.obtener_local();
+
+
+
+function Informacion(nodo){  
+  arbol1.buscar_nodo_devolver(arbol1.root, nodo);
+}
+
 
 

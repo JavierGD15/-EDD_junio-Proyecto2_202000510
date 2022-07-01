@@ -1,1 +1,68 @@
-<h1>usar el local para pasar los datos de html a otro junto con la carga de comentarios que recomiendo hacerla con local igualmente att de mi para mi :)</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menù con tabs | Html - Css</title>
+    <link rel="stylesheet" href="../css/vistas.css">
+    
+    
+    
+</head>
+<body>
+    <a href="../index.html" class="cerrar">Cerrar Sesión</a>
+    <a href="../templates/tienda.html" class="cerrar">Regresar</a>
+       
+    <div class="container" id="lienzo1">
+        <table style="border-collapse: collapse" bordercolor="#111111" width="900" id="tblinfo" >
+            <tr>
+                <th>Titulo de la Pelicula</th>
+                <th>Descripción</th>
+                <th>Estrellas</th>
+                <th>Alquilar</th>
+                <th>Precio</th>
+            </tr>                  
+
+        </table>    
+        <br>
+        <br>
+         
+        <form id="formulario">
+            <!-- usuario INPUT -->
+            <label for="username">Ingresa su puntuación</label>
+            <input name="star" type="text" placeholder="Ingresa su puntuación">            
+            <input type="submit" value="Ingresar">        
+                    
+        </form>
+        
+        <br>
+        <br>
+        </div>
+        <div class="container" id="lienzo2">
+        <h1>Comentarios</h1>
+        <table style="border-collapse: collapse" bordercolor="#111111" width="900" id="tabla_comentarios" >
+            <tr>
+                <th>Nombre</th>
+                <th>Comentario</th>
+            </tr>                  
+
+        </table>  
+        
+        <form id="formulario2">
+            <!-- usuario INPUT -->
+            
+            <input name="Comentario" type="text" placeholder="Ingresa su Comentario">            
+            <input type="submit" value="Ingresar">        
+                    
+        </form>
+        
+
+    </div>
+    <script type="text/javascript" src="../js/arbol_avl.js"></script>
+    <script type="text/javascript" src="../js/comentarios.js"></script>
+   
+
+</body>
+</html>
+
