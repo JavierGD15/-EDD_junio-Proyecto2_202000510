@@ -135,7 +135,7 @@ class Arbol{
             for (var i = 0; i < tabla.length; i++) {
                 var nodo = this.buscar_Nodo_arbol(tabla[i]);
                 var tabla_actores = document.getElementById("tblactores");
-                var fila = tabla_actores.insertRow(i+1);                 
+                var fila = tabla_actores.insertRow(-1);                 
                 var celda_nombre = fila.insertCell(-1);                
                 var celda_descripcion = fila.insertCell(-1);
                 
@@ -167,22 +167,27 @@ class Arbol{
 var auto = new Arbol();
 auto.iniciar_lista_arbol();
 document.getElementById('mostrar').addEventListener('click', function() {
-    // let valorActivo = document.querySelector('input[name="status"]:checked').value; // Esto tiene el problema de que puede que un elemento no esté activo, entonces no se podría acceder al value de un null, lo que sería un error en tiempo de ejecución
-    let elementoActivo = document.querySelector('input[name="status"]:checked');
+     let elementoActivo = document.querySelector('input[name="status"]:checked');
     if(elementoActivo) {
         if(elementoActivo.value == "In orden"){
+            let Table = document.getElementById("tblactores");
+            Table.innerHTML = "";
             var lista = [];
             var tablas = auto.inorden(auto.raiz,lista);
             auto.enviar_tabla(tablas);
             
         }
         else if(elementoActivo.value == "Pre orden"){
+            let Table = document.getElementById("tblactores");
+            Table.innerHTML = "";
         var lista = [];
         var tablas = auto.preorden(auto.raiz,lista);
         auto.enviar_tabla(tablas);
 
         }
         else if(elementoActivo.value == "Post orden"){
+            let Table = document.getElementById("tblactores");
+            Table.innerHTML = "";
             var lista = [];
         var tablas = auto.postorden(auto.raiz,lista);
         auto.enviar_tabla(tablas);

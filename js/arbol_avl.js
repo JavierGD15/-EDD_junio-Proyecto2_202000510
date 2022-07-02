@@ -198,7 +198,11 @@ class Node {
   }
   obtetener_nodo(valor){
           var inicio = valor;
-          let tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
+          var tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
+
+
+          
+
 
           //insertar imagen
           let cellImg = tblDatos.insertCell(-1);
@@ -315,24 +319,36 @@ class Node {
     }
   }
 
-  buscar_nodo(nodo,id_pelicula){
-    var inicio = nodo;    
+  buscar_nodo(nodo,id_pelicula, logica, fila){
+    var inicio = nodo;   
     
     if(inicio.valor == id_pelicula){
-      return inicio;
-    }else{
+      if(logica == false){
+        this.llenar_info(inicio);
+      }else if(logica == true){       
+     
+     this.llenar_descendente(inicio,fila);
+
+      }else{     
+     this.llenar_descendente(inicio,fila);
+      }
+      
+    }
+    
+    
+    else{
       if(inicio.izquierda != null){
-        this.buscar_nodo(inicio.izquierda, id_pelicula);
+        this.buscar_nodo(inicio.izquierda, id_pelicula, logica, fila);
       }
       if(inicio.derecha != null){
-        this.buscar_nodo(inicio.derecha, id_pelicula);
+        this.buscar_nodo(inicio.derecha, id_pelicula, logica, fila);
       }
     }
   }
 
   iniciar_tabla(){            
           var inicio = this.root;   
-          let tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
+          var tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
           //insertar imagen
           let cellImg = tblDatos.insertCell(-1);
           let img = document.createElement("img");
@@ -370,63 +386,51 @@ class Node {
 
   }
 
-  llenar_ascendente(){
-        //obtener localstorage
-        var local = localStorage.getItem("json_peliculas");
-        var json = JSON.parse(local);        
-        var lista_ayuda = [];    
-        for (var i = 0; i < json.length; i++) {          
-          lista_ayuda.push(json[i].id_pelicula);   
-              
-        }
-        lista_ayuda.sort();
-        for (var i = 0; i < lista_ayuda.length; i++) {
-          
-          let tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
-          //insertar imagen
-          let cellImg = tblDatos.insertCell(-1);
-          let img = document.createElement("img");
-          img.src = "../img/poster.jpg";
-          img.width = "200";
-          img.height = "200";
-          cellImg.appendChild(img);
-          
-          let cell2 = tblDatos.insertCell(-1);
-          let cell3 = tblDatos.insertCell(-1);              
-          
-          cell2.innerHTML = inicio.nombre_pelicula;
-          cell3.innerHTML = inicio.descripcion;
-          
-          //enviar boton
-          let cell7 = tblDatos.insertCell(-1);
-          let btn = document.createElement("button");
-          btn.innerHTML = "Informacion";
-          btn.setAttribute("type", "submit");        
-          btn.setAttribute("onclick", "Informacion("+inicio.id_pelicula+")");
-          cell7.appendChild(btn);
+  
+  llenar_descendente(inicio, fila){
+       
+       var tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
+       //insertar imagen
+       let cellImg = tblDatos.insertCell(-1);
+       let img = document.createElement("img");
+       img.src = "../img/poster.jpg";
+       img.width = "200";
+       img.height = "200";
+       cellImg.appendChild(img);
+       
+       let cell2 = tblDatos.insertCell(-1);
+       let cell3 = tblDatos.insertCell(-1);              
+       
+       cell2.innerHTML = inicio.nombre_pelicula;
+       cell3.innerHTML = inicio.descripcion;
+       
+       //enviar boton
+       let cell7 = tblDatos.insertCell(-1);
+       let btn = document.createElement("button");
+       btn.innerHTML = "Informacion";
+       btn.setAttribute("type", "submit");        
+       btn.setAttribute("onclick", "Informacion("+inicio.id_pelicula+")");
+       cell7.appendChild(btn);
 
-          let cell8 = tblDatos.insertCell(-1);
-          let btn1 = document.createElement("button");
-          btn1.innerHTML = "Alquilar";
-          btn1.setAttribute("type", "submit");         
-          btn1.setAttribute("onclick", "pila()");
-          cell8.appendChild(btn1);    
+       let cell8 = tblDatos.insertCell(-1);
+       let btn1 = document.createElement("button");
+       btn1.innerHTML = "Alquilar";
+       btn1.setAttribute("type", "submit");         
+       btn1.setAttribute("onclick", "pila()");
+       cell8.appendChild(btn1);    
 
-          let cell4 = tblDatos.insertCell(-1);            
-          cell4.innerHTML = "Q"+inicio.precion_Q;
-
-          this.obtetener_nodo(inicio.izquierda);
-          this.obtetener_nodo(inicio.derecha);
-              
-        }
+       let cell4 = tblDatos.insertCell(-1);            
+       cell4.innerHTML = "Q"+inicio.precion_Q;
+        
   }
-  llenar_descendente(){}
 
-  llenar_info(){
-    var local = localStorage.getItem("json_info");
-    
+
+  //esta malo
+  llenar_info(nodo){
+    var local = localStorage.getItem("json_info");    
     var json = JSON.parse(local);            
-    var nodo = this.buscar_nodo(this.root, json[0].id_pelicula);
+    this.buscar_nodo(this.root, json[0].id_pelicula, false);
+    
     
     let tblDatos = document.getElementById("tblinfo").insertRow(-1);    
     
@@ -519,15 +523,42 @@ class Node {
     }catch(e){}
  
     document.getElementById('mostrar1').addEventListener('click', function() {
-      // let valorActivo = document.querySelector('input[name="status"]:checked').value; // Esto tiene el problema de que puede que un elemento no esté activo, entonces no se podría acceder al value de un null, lo que sería un error en tiempo de ejecución
-      let elementoActivo = document.querySelector('input[name="status1"]:checked');
+       let elementoActivo = document.querySelector('input[name="status1"]:checked');
       if(elementoActivo) {
           if(elementoActivo.value == "Ascendente"){
-              arbol1.llenar_ascendente();
+            let Table = document.getElementById("tblpeliculas");
+            Table.innerHTML = "";
+             //obtener localstorage
+            var local = localStorage.getItem("json_peliculas");
+            var json = JSON.parse(local);        
+            var lista_ayuda = [];    
+            for (var i = 0; i < json.length; i++) {          
+              lista_ayuda.push(json[i].id_pelicula);   
+
+            }
+            lista_ayuda.sort();
+            for (var i = 0; i < lista_ayuda.length; i++) {
+              arbol1.buscar_nodo(arbol1.root, lista_ayuda[i], null, i);
+            }
+              
               
           }
           else if(elementoActivo.value == "Descendente"){
-              arbol1.llenar_descendente();
+            let Table = document.getElementById("tblpeliculas");
+          Table.innerHTML = "";
+            //obtener localstorage
+            var local = localStorage.getItem("json_peliculas");
+            var json = JSON.parse(local);        
+            var lista_ayuda = [];    
+            for (var i = 0; i < json.length; i++) {          
+              lista_ayuda.push(json[i].id_pelicula);   
+
+            }
+            lista_ayuda.reverse();
+            for (var i = 0; i < lista_ayuda.length; i++) {
+              arbol1.buscar_nodo(arbol1.root, lista_ayuda[i], true, i);
+            }
+             
   
           }
       } else {
@@ -559,6 +590,7 @@ formulario.addEventListener('submit', function(e){
     //recibir documento de formulario
     let file = document.querySelector('#file1');
     let reader = new FileReader();
+
     reader.readAsText(file.files[0]);
     reader.onload = function(e){
         //guardar documento        
