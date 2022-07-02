@@ -1,6 +1,6 @@
 // Create node
 class Node {
-    constructor(valor = null, id_pelicula, nombre_pelicula,descripcion, puntuacion_star, precion_Q) {
+    constructor(valor = null, id_pelicula, nombre_pelicula,descripcion, puntuacion_star, precio_Q) {
       this.valor = valor;
       this.altura = 1;
       this.izquierda = null;
@@ -9,7 +9,7 @@ class Node {
       this.nombre_pelicula = nombre_pelicula;
       this.descripcion = descripcion;
       this.puntuacion_star = puntuacion_star;
-      this.precion_Q = precion_Q;
+      this.precio_Q = precio_Q;
 
     }
   }
@@ -234,7 +234,7 @@ class Node {
           cell8.appendChild(btn1);    
 
           let cell4 = tblDatos.insertCell(-1);            
-          cell4.innerHTML = "Q"+inicio.precion_Q;
+          cell4.innerHTML = "Q"+inicio.precio_Q;
     if(inicio.izquierda != null){
       this.obtetener_nodo(inicio.izquierda);
     }
@@ -269,14 +269,14 @@ class Node {
    
     for (var i = 0; i < json.length; i++) {        
       
-      this.agregar_info(this.root, json[i].id_pelicula, json[i].nombre_pelicula, json[i].descripcion, json[i].puntuacion_star, json[i].precion_Q);      
+      this.agregar_info(this.root, json[i].id_pelicula, json[i].nombre_pelicula, json[i].descripcion, json[i].puntuacion_star, json[i].precio_Q);      
     }
     
     this.iniciar_tabla();
 
   }
 
-  agregar_info(nodo,id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precion_Q){
+  agregar_info(nodo,id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q){
     var inicio = nodo;
     
     if(inicio.valor == id_pelicula){
@@ -284,13 +284,13 @@ class Node {
       inicio.nombre_pelicula = nombre_pelicula;
       inicio.descripcion = descripcion;
       inicio.puntuacion_star = puntuacion_star;
-      inicio.precion_Q = precion_Q;
+      inicio.precio_Q = precio_Q;
     }else{
       if(inicio.izquierda != null){
-        this.agregar_info(inicio.izquierda, id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precion_Q);
+        this.agregar_info(inicio.izquierda, id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q);
       }
       if(inicio.derecha != null){
-        this.agregar_info(inicio.derecha, id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precion_Q);
+        this.agregar_info(inicio.derecha, id_pelicula, nombre_pelicula, descripcion, puntuacion_star, precio_Q);
       }
     }
   }
@@ -379,7 +379,7 @@ class Node {
           cell8.appendChild(btn1);    
 
           let cell4 = tblDatos.insertCell(-1);            
-          cell4.innerHTML = "Q"+inicio.precion_Q;
+          cell4.innerHTML = "Q"+inicio.precio_Q;
 
           this.obtetener_nodo(inicio.izquierda);
           this.obtetener_nodo(inicio.derecha);
@@ -420,7 +420,7 @@ class Node {
        cell8.appendChild(btn1);    
 
        let cell4 = tblDatos.insertCell(-1);            
-       cell4.innerHTML = "Q"+inicio.precion_Q;
+       cell4.innerHTML = "Q"+inicio.precio_Q;
         
   }
 
@@ -485,7 +485,7 @@ class Node {
     cell8.appendChild(btn1);    
 
     let cell4 = tblDatos.insertCell(-1);            
-    cell4.innerHTML = "Q"+nodo.precion_Q;
+    cell4.innerHTML = "Q"+nodo.precio_Q;
 
     
   }
@@ -497,7 +497,7 @@ class Node {
     enviar1.nombre_pelicula = nodo.nombre_pelicula;
     enviar1.descripcion = nodo.descripcion;
     enviar1.puntuacion_star = nodo.puntuacion_star;
-    enviar1.precion_Q = nodo.precion_Q;    
+    enviar1.precio_Q = nodo.precio_Q;    
     enviar.push(enviar1);
     localStorage.removeItem("json_info");
     localStorage.setItem("json_info", JSON.stringify(enviar));
@@ -522,61 +522,76 @@ class Node {
       arbol1.cargar_comentarios();
     }catch(e){}
  
+
+  try{
     document.getElementById('mostrar1').addEventListener('click', function() {
-       let elementoActivo = document.querySelector('input[name="status1"]:checked');
-      if(elementoActivo) {
-          if(elementoActivo.value == "Ascendente"){
-            let Table = document.getElementById("tblpeliculas");
-            Table.innerHTML = "";
-             //obtener localstorage
-            var local = localStorage.getItem("json_peliculas");
-            var json = JSON.parse(local);        
-            var lista_ayuda = [];    
-            for (var i = 0; i < json.length; i++) {          
-              lista_ayuda.push(json[i].id_pelicula);   
-
-            }
-            lista_ayuda.sort();
-            for (var i = 0; i < lista_ayuda.length; i++) {
-              arbol1.buscar_nodo(arbol1.root, lista_ayuda[i], null, i);
-            }
-              
-              
-          }
-          else if(elementoActivo.value == "Descendente"){
-            let Table = document.getElementById("tblpeliculas");
-          Table.innerHTML = "";
+      let elementoActivo = document.querySelector('input[name="status1"]:checked');
+     if(elementoActivo) {
+         if(elementoActivo.value == "Ascendente"){
+           let Table = document.getElementById("tblpeliculas");
+           Table.innerHTML = "";
             //obtener localstorage
-            var local = localStorage.getItem("json_peliculas");
-            var json = JSON.parse(local);        
-            var lista_ayuda = [];    
-            for (var i = 0; i < json.length; i++) {          
-              lista_ayuda.push(json[i].id_pelicula);   
+           var local = localStorage.getItem("json_peliculas");
+           var json = JSON.parse(local);        
+           var lista_ayuda = [];    
+           for (var i = 0; i < json.length; i++) {          
+             lista_ayuda.push(json[i].id_pelicula);   
 
-            }
-            lista_ayuda.reverse();
-            for (var i = 0; i < lista_ayuda.length; i++) {
-              arbol1.buscar_nodo(arbol1.root, lista_ayuda[i], true, i);
-            }
+           }
+           const arreglo = lista_ayuda;
+          arreglo.sort((unNumero, otroNumero) => unNumero - otroNumero);
+          
+         
+           
+           
+           for (var i = 0; i < lista_ayuda.length; i++) {
+             arbol1.buscar_nodo(arbol1.root, arreglo[i], null, i);
+           }
              
-  
-          }
-      } else {
-          alert('No hay ninún elemento activo');
+             
+         }
+         else if(elementoActivo.value == "Descendente"){
+           let Table = document.getElementById("tblpeliculas");
+         Table.innerHTML = "";
+           //obtener localstorage
+           var local = localStorage.getItem("json_peliculas");
+           var json = JSON.parse(local);        
+           var lista_ayuda = [];    
+           for (var i = 0; i < json.length; i++) {          
+             lista_ayuda.push(json[i].id_pelicula);   
+
+           }
+           const arreglo = lista_ayuda;
+            
+            arreglo.sort((unNumero, otroNumero) => otroNumero - unNumero);
+          
+           for (var i = 0; i < lista_ayuda.length; i++) {
+             arbol1.buscar_nodo(arbol1.root, arreglo[i], true, i);
+           }
+            
+ 
+         }
+     } else {
+         alert('No hay ninún elemento activo');
+     }
+ });
+
+ document.getElementById('setear').addEventListener('click', function() {
+  setRadio('status', 'interesado')
+});
+
+function setRadio(name, value) {
+  document.querySelectorAll(`input[name="${name}"]`).forEach(element => {
+      if(element.value === value) {
+          element.checked = true;
       }
   });
+}
+  }catch(e){}
+
+    
   
-  document.getElementById('setear').addEventListener('click', function() {
-      setRadio('status', 'interesado')
-  });
-  
-  function setRadio(name, value) {
-      document.querySelectorAll(`input[name="${name}"]`).forEach(element => {
-          if(element.value === value) {
-              element.checked = true;
-          }
-      });
-  }
+
 
 
 
@@ -586,7 +601,6 @@ class Node {
 var formulario = document.getElementById("lienzo1");
 formulario.addEventListener('submit', function(e){
     e.preventDefault();
-    console.log("Formulario enviado");
     //recibir documento de formulario
     let file = document.querySelector('#file1');
     let reader = new FileReader();

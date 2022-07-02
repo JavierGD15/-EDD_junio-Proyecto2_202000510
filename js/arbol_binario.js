@@ -102,8 +102,27 @@ class Arbol{
         
         codigodot += "}";
         
+        
         d3.select("#lienzo4").graphviz()
         .renderDot(codigodot)
+        //generar imagen
+
+        d3.select("#lienzo4").graphviz()
+        .renderDot(codigodot)
+        html2canvas(document.body, {
+            onrendered (canvas) {
+              var link = document.getElementById('download');
+              var image = canvas.toDataURL();
+              console.log(image);
+              link.href = image;
+              link.download = 'screenshot.png';
+            }
+           });
+
+        
+
+        
+
     }
     
     graficar_lados(nodo){
@@ -165,49 +184,58 @@ class Arbol{
 
 }
 var auto = new Arbol();
+try{
+   
 auto.iniciar_lista_arbol();
-document.getElementById('mostrar').addEventListener('click', function() {
-     let elementoActivo = document.querySelector('input[name="status"]:checked');
-    if(elementoActivo) {
-        if(elementoActivo.value == "In orden"){
-            let Table = document.getElementById("tblactores");
-            Table.innerHTML = "";
-            var lista = [];
-            var tablas = auto.inorden(auto.raiz,lista);
-            auto.enviar_tabla(tablas);
-            
-        }
-        else if(elementoActivo.value == "Pre orden"){
-            let Table = document.getElementById("tblactores");
-            Table.innerHTML = "";
-        var lista = [];
-        var tablas = auto.preorden(auto.raiz,lista);
-        auto.enviar_tabla(tablas);
-
-        }
-        else if(elementoActivo.value == "Post orden"){
-            let Table = document.getElementById("tblactores");
-            Table.innerHTML = "";
-            var lista = [];
-        var tablas = auto.postorden(auto.raiz,lista);
-        auto.enviar_tabla(tablas);
-        }
-    } else {
-        alert('No hay ninún elemento activo');
-    }
-});
-
-document.getElementById('setear').addEventListener('click', function() {
-    setRadio('status', 'interesado')
-});
-
-function setRadio(name, value) {
-    document.querySelectorAll(`input[name="${name}"]`).forEach(element => {
-        if(element.value === value) {
-            element.checked = true;
-        }
-    });
 }
+catch(e){
+}
+
+try{
+    document.getElementById('mostrar').addEventListener('click', function() {
+        let elementoActivo = document.querySelector('input[name="status"]:checked');
+       if(elementoActivo) {
+           if(elementoActivo.value == "In orden"){
+               let Table = document.getElementById("tblactores");
+               Table.innerHTML = "";
+               var lista = [];
+               var tablas = auto.inorden(auto.raiz,lista);
+               auto.enviar_tabla(tablas);
+               
+           }
+           else if(elementoActivo.value == "Pre orden"){
+               let Table = document.getElementById("tblactores");
+               Table.innerHTML = "";
+           var lista = [];
+           var tablas = auto.preorden(auto.raiz,lista);
+           auto.enviar_tabla(tablas);
+   
+           }
+           else if(elementoActivo.value == "Post orden"){
+               let Table = document.getElementById("tblactores");
+               Table.innerHTML = "";
+               var lista = [];
+           var tablas = auto.postorden(auto.raiz,lista);
+           auto.enviar_tabla(tablas);
+           }
+       } else {
+           alert('No hay ninún elemento activo');
+       }
+   });
+   
+   document.getElementById('setear').addEventListener('click', function() {
+       setRadio('status', 'interesado')
+   });
+   
+   function setRadio(name, value) {
+       document.querySelectorAll(`input[name="${name}"]`).forEach(element => {
+           if(element.value === value) {
+               element.checked = true;
+           }
+       });
+   }
+}catch(e){}
+
 
 var formulario = document.getElementById("lienzo4");
 
