@@ -103,6 +103,32 @@ class Lista_tabla {
         d3.select("#lienzo3").graphviz()
         .renderDot(codigodot)
     }
+    mostrar_tabla(){
+        var ayuda = this.primero;
+        console.log(ayuda);
+        while (ayuda != null) {
+            if(ayuda.siguiente != null){
+                var ayuda_abajo = ayuda.abajo;
+                ayuda = ayuda.siguiente;
+                while(ayuda != null){
+                var tabla = document.getElementById("tblcategorias");
+                var fila = tabla.insertRow(-1);
+                var celda3 = fila.insertCell(-1);
+                var celda1 = fila.insertCell(-1);
+                var celda2 = fila.insertCell(-1);        
+                celda3.innerHTML = ayuda.posicion;
+                celda1.innerHTML = ayuda.id_categoria;
+                celda2.innerHTML = ayuda.company;
+                ayuda = ayuda.siguiente;
+                }
+                ayuda = ayuda_abajo;
+            }else{
+               
+                ayuda = ayuda.abajo;
+            }
+        }
+
+    }
 
 
 }
@@ -110,6 +136,22 @@ class Lista_tabla {
 var lista = new Lista_tabla();
 for (let index = 0; index < 20; index++) {
     lista.insertar();            
+}
+
+try {
+    var contenido = localStorage.getItem("json_clasificaciones");
+    var json = JSON.parse(contenido);
+       
+        
+        for (var i = 0; i < json.length; i++) {
+            
+                lista.calcular_insercion(json[i].id_categoria, json[i].company);
+        
+
+        }
+    lista.mostrar_tabla();
+} catch (error) {
+    console.log(error);
 }
 
 var formulario = document.getElementById("lienzo3");
