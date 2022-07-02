@@ -40,26 +40,35 @@ class Arbol{
             }
         }
     }
-    preorden(raiz) {
+    preorden(raiz,lista) {
+        
         if (raiz != null) {
-            console.log(raiz.nombre_actor);
-            this.preorden(raiz.izquierda);
-            this.preorden(raiz.derecha);
+            lista.push(raiz.dni);            
+            this.preorden(raiz.izquierda,lista);
+            this.preorden(raiz.derecha,lista);
+            return lista;
         }
+       
     }
-    inorden(raiz) {
+    inorden(raiz,lista) {
+        
         if (raiz != null) {
-            this.inorden(raiz.izquierda);
-            console.log(raiz.nombre_actor);
-            this.inorden(raiz.derecha);
+            this.inorden(raiz.izquierda,lista);
+            lista.push(raiz.dni);
+            this.inorden(raiz.derecha,lista);
+            return lista;
         }
+        
     }
-    postorden(raiz) {
+    postorden(raiz,lista) {
+        
         if (raiz != null) {
-            this.postorden(raiz.izquierda);
-            this.postorden(raiz.derecha);
-            console.log(raiz.nombre_actor);
+            this.postorden(raiz.izquierda,lista);
+            this.postorden(raiz.derecha,lista);
+            lista.push(raiz.dni);
+            return lista;
         }
+        
     }
     buscar_Nodo_arbol(dni) {
         var actual = this.raiz;
@@ -121,39 +130,78 @@ class Arbol{
         }
         
     }
-    enviar_tabla(raiz){
-        if (raiz != null) {
-            let tblDatos = document.getElementById("tblautores").insertRow(-1);
-            //insertar imagen
-            let cellImg = tblDatos.insertCell(-1);
-            let img = document.createElement("img");
-            img.src = "../img/pro.jpg";
-            img.width = "100";
-            img.height = "100";
-            cellImg.appendChild(img);
-            let cell2 = tblDatos.insertCell(-1);
-            let cell3 = tblDatos.insertCell(-1);
-            let cell4 = tblDatos.insertCell(-1);
-            let cell5 = tblDatos.insertCell(-1);
+    enviar_tabla(tabla){
+        if (tabla != null) {
+            for (var i = 0; i < tabla.length; i++) {
+                var nodo = this.buscar_Nodo_arbol(tabla[i]);
+                var tabla_actores = document.getElementById("tblactores");
+                var fila = tabla_actores.insertRow(i+1);                 
+                var celda_nombre = fila.insertCell(-1);                
+                var celda_descripcion = fila.insertCell(-1);
+                
+                celda_nombre.innerHTML = nodo.nombre_actor;
+                
+                celda_descripcion.innerHTML = nodo.descripcion;
+            }
             
-            let cell7 = tblDatos.insertCell(-1);  
-
-            cell2.innerHTML = raiz.nombre_actor;
-            cell3.innerHTML = raiz.correo;
-            cell4.innerHTML = raiz.telefono;
-            cell5.innerHTML = raiz.descripcion;
-            
-            cell7.innerHTML = raiz.dni;
-            
-            this.enviar_tabla(raiz.izquierda);
-            this.enviar_tabla(raiz.derecha);
-        }            
-        
-        
-       
-
+        }  
+        else{
+            return null;
+        }     
     }
 
+    iniciar_lista_arbol(){
+        let json_fantasia = JSON.parse(localStorage.getItem("json_Actores_pelis"));
+        if(json_fantasia != null){
+            
+        for (var i = 0; i < json_fantasia.length; i++) {
+            this.insertar(json_fantasia[i].dni, json_fantasia[i].nombre_actor, json_fantasia[i].correo,json_fantasia[i].descripcion);
+        }
+        var lista = [];
+        var tablas = this.preorden(this.raiz,lista);
+        this.enviar_tabla(tablas);
+        }
+    }
+
+}
+var auto = new Arbol();
+auto.iniciar_lista_arbol();
+document.getElementById('mostrar').addEventListener('click', function() {
+    // let valorActivo = document.querySelector('input[name="status"]:checked').value; // Esto tiene el problema de que puede que un elemento no esté activo, entonces no se podría acceder al value de un null, lo que sería un error en tiempo de ejecución
+    let elementoActivo = document.querySelector('input[name="status"]:checked');
+    if(elementoActivo) {
+        if(elementoActivo.value == "In orden"){
+            var lista = [];
+            var tablas = auto.inorden(auto.raiz,lista);
+            auto.enviar_tabla(tablas);
+            
+        }
+        else if(elementoActivo.value == "Pre orden"){
+        var lista = [];
+        var tablas = auto.preorden(auto.raiz,lista);
+        auto.enviar_tabla(tablas);
+
+        }
+        else if(elementoActivo.value == "Post orden"){
+            var lista = [];
+        var tablas = auto.postorden(auto.raiz,lista);
+        auto.enviar_tabla(tablas);
+        }
+    } else {
+        alert('No hay ninún elemento activo');
+    }
+});
+
+document.getElementById('setear').addEventListener('click', function() {
+    setRadio('status', 'interesado')
+});
+
+function setRadio(name, value) {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(element => {
+        if(element.value === value) {
+            element.checked = true;
+        }
+    });
 }
 
 var formulario = document.getElementById("lienzo4");
@@ -181,9 +229,10 @@ formulario.addEventListener('submit', function(e){
     }
 })
 
-//var auto = new Arbol();
 
-//auto.enviar_tabla(auto.iniciar_lista());
+
+
+
 
 
 

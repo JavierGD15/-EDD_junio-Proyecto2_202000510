@@ -89,9 +89,15 @@ formulario.addEventListener('submit', function(e){
     }
     else if(datos.get("user") == "EDD" && datos.get("contraseña") == "123"){
         lista.insertar_predeterminado();
-        //enviar nuevo html
-        
-        location.href = "templates/admin.html";
+        if(datos.get("checkbox") == "on"){                        
+            location.href = "templates/admin.html";
+            opcion = true;
+            }
+            else{
+            opcion = true;
+            localStorage.setItem("usuario_activo", "Wilfred");
+            location.href = "templates/tienda.html";
+        }
     }
     else{        
         var opcion = false;

@@ -292,11 +292,18 @@ class Node {
   }
 
   buscar_nodo_devolver(nodo,id_pelicula){
-    var inicio = nodo;
-    console.log(inicio.valor + " " + id_pelicula);
+    if (nodo== null){
+      var inicio = this.root;
+    }
+    else{
+      var inicio = nodo;
+    }
+    
+   
    
     
     if(inicio.valor == id_pelicula){
+      
       this.gurdar_info(inicio);
     }else{
       if(inicio.izquierda != null){
@@ -362,19 +369,69 @@ class Node {
           this.obtetener_nodo(inicio.derecha);
 
   }
+
+  llenar_ascendente(){
+        //obtener localstorage
+        var local = localStorage.getItem("json_peliculas");
+        var json = JSON.parse(local);        
+        var lista_ayuda = [];    
+        for (var i = 0; i < json.length; i++) {          
+          lista_ayuda.push(json[i].id_pelicula);   
+              
+        }
+        lista_ayuda.sort();
+        for (var i = 0; i < lista_ayuda.length; i++) {
+          
+          let tblDatos = document.getElementById("tblpeliculas").insertRow(-1);
+          //insertar imagen
+          let cellImg = tblDatos.insertCell(-1);
+          let img = document.createElement("img");
+          img.src = "../img/poster.jpg";
+          img.width = "200";
+          img.height = "200";
+          cellImg.appendChild(img);
+          
+          let cell2 = tblDatos.insertCell(-1);
+          let cell3 = tblDatos.insertCell(-1);              
+          
+          cell2.innerHTML = inicio.nombre_pelicula;
+          cell3.innerHTML = inicio.descripcion;
+          
+          //enviar boton
+          let cell7 = tblDatos.insertCell(-1);
+          let btn = document.createElement("button");
+          btn.innerHTML = "Informacion";
+          btn.setAttribute("type", "submit");        
+          btn.setAttribute("onclick", "Informacion("+inicio.id_pelicula+")");
+          cell7.appendChild(btn);
+
+          let cell8 = tblDatos.insertCell(-1);
+          let btn1 = document.createElement("button");
+          btn1.innerHTML = "Alquilar";
+          btn1.setAttribute("type", "submit");         
+          btn1.setAttribute("onclick", "pila()");
+          cell8.appendChild(btn1);    
+
+          let cell4 = tblDatos.insertCell(-1);            
+          cell4.innerHTML = "Q"+inicio.precion_Q;
+
+          this.obtetener_nodo(inicio.izquierda);
+          this.obtetener_nodo(inicio.derecha);
+              
+        }
+  }
+  llenar_descendente(){}
+
   llenar_info(){
     var local = localStorage.getItem("json_info");
     
     var json = JSON.parse(local);            
     var nodo = this.buscar_nodo(this.root, json[0].id_pelicula);
     
-    
     let tblDatos = document.getElementById("tblinfo").insertRow(-1);    
     
     let cell1 = tblDatos.insertCell(-1);    
-    let cell3 = tblDatos.insertCell(-1);     
-    
-   
+    let cell3 = tblDatos.insertCell(-1);   
     
     cell1.innerHTML = nodo.nombre_pelicula;
     cell3.innerHTML = nodo.descripcion;
@@ -438,6 +495,7 @@ class Node {
     enviar1.puntuacion_star = nodo.puntuacion_star;
     enviar1.precion_Q = nodo.precion_Q;    
     enviar.push(enviar1);
+    localStorage.removeItem("json_info");
     localStorage.setItem("json_info", JSON.stringify(enviar));
     location.href = "../templates/vista_pelicula.html";
   
@@ -460,6 +518,39 @@ class Node {
       arbol1.cargar_comentarios();
     }catch(e){}
  
+    document.getElementById('mostrar1').addEventListener('click', function() {
+      // let valorActivo = document.querySelector('input[name="status"]:checked').value; // Esto tiene el problema de que puede que un elemento no esté activo, entonces no se podría acceder al value de un null, lo que sería un error en tiempo de ejecución
+      let elementoActivo = document.querySelector('input[name="status1"]:checked');
+      if(elementoActivo) {
+          if(elementoActivo.value == "Ascendente"){
+              arbol1.llenar_ascendente();
+              
+          }
+          else if(elementoActivo.value == "Descendente"){
+              arbol1.llenar_descendente();
+  
+          }
+      } else {
+          alert('No hay ninún elemento activo');
+      }
+  });
+  
+  document.getElementById('setear').addEventListener('click', function() {
+      setRadio('status', 'interesado')
+  });
+  
+  function setRadio(name, value) {
+      document.querySelectorAll(`input[name="${name}"]`).forEach(element => {
+          if(element.value === value) {
+              element.checked = true;
+          }
+      });
+  }
+
+
+
+
+
 
 var formulario = document.getElementById("lienzo1");
 formulario.addEventListener('submit', function(e){
@@ -491,7 +582,8 @@ formulario.addEventListener('submit', function(e){
 
 
 function Informacion(nodo){  
-  arbol1.buscar_nodo_devolver(arbol1.root, nodo);
+  console.log(nodo);
+  arbol1.buscar_nodo_devolver(null, nodo);
 }
 
 
