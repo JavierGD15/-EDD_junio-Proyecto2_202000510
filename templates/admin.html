@@ -6,11 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menù con tabs | Html - Css</title>
     <link rel="stylesheet" href="../css/admin.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                
+
+    
+    
     
     
 </head>
 <body>
     <a href="../index.html" class="cerrar">Cerrar Sesión</a>
+    <div>
+        <button id="descargar" type="button" onclick="descargarImagen()"> Descargar grafo</button>
+    </div>
      
        
     <div class="container" >
@@ -30,13 +39,19 @@
                 <script src="//d3js.org/d3.v5.min.js"></script>
                 <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
                 <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
-                <script type="text/javascript" src="../js/lista_usuarios.js"></script>                
+                <script src="https://superal.github.io/canvas2image/canvas2image.js "></script>
+                <script type="text/javascript" src="../js/lista_usuarios.js"></script>  
                 <br>
                 <form  id="formulario" >    
                     
                     <input type="file"   type="file" id="file" accept=".json">
                     <button class="btn btn-primary" type="submit">Enviar</button>
-                </form>                                   
+                </form>  
+
+                <a href="../templates/clientes.html" class="cerrar">Descargar</a>
+
+                
+                                                   
             </div>
 
             
@@ -54,6 +69,7 @@
                     <input type="file"  type="file" id="file1" accept=".json">
                     <button class="btn btn-primary" type="submit">Enviar</button>
                 </form>  
+                <a href="../templates/peliculas.html" class="cerrar">Descargar</a>
 
             </div>               
 
@@ -68,12 +84,10 @@
                 <form  id="formulario" >                        
                     <input type="file"   type="file" id="file4" accept=".json">
                     <button class="btn btn-primary" type="submit">Enviar</button>
-                    <a id="download">Tomar screenshot y descargar</a>
-
                     
-
                 </form>  
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>   
+                <a href="../templates/actores.html" class="cerrar">Descargar</a>
+                
             </div>
             
             <input type="radio" name="radio" id="radio4">      
@@ -87,13 +101,15 @@
                 <form  id="formulario" >                        
                     <input type="file"   type="file" id="file5" accept=".json">
                     <button class="btn btn-primary" type="submit">Enviar</button>
-                </form>  
+                </form> 
+                <a href="../templates/categorias.html" class="cerrar">Descargar</a>
 
             </div>
 
             
         </div>
     </div>
+        
 </body>
 </html>
 

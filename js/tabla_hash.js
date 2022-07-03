@@ -99,13 +99,13 @@ class Lista_tabla {
         codigodot += "\n"+recto+"\n";
         codigodot += "{rank=same;\n"+filas+"\n}\n";
         codigodot += "}";
-        console.log(codigodot);
+        
         d3.select("#lienzo3").graphviz()
         .renderDot(codigodot)
     }
     mostrar_tabla(){
         var ayuda = this.primero;
-        console.log(ayuda);
+        
         while (ayuda != null) {
             if(ayuda.siguiente != null){
                 var ayuda_abajo = ayuda.abajo;
@@ -133,14 +133,49 @@ class Lista_tabla {
 
 }
 
-var lista = new Lista_tabla();
+
+
+
+try {
+    var formulario = document.getElementById("lienzo3");
+
+formulario.addEventListener('submit', function(e){
+    e.preventDefault();
+    
+    //recibir documento de formulario
+    let file = document.querySelector('#file5');
+    let reader = new FileReader();
+    reader.readAsText(file.files[0]);
+    reader.onload = function(e){
+        let contenido = e.target.result;
+        var json = JSON.parse(contenido);
+        var lista = new Lista_tabla();
 for (let index = 0; index < 20; index++) {
     lista.insertar();            
 }
+        
+
+        localStorage.setItem("json_clasificaciones", contenido);
+        
+        for (var i = 0; i < json.length; i++) {
+            
+                lista.calcular_insercion(json[i].id_categoria, json[i].company);
+        
+
+        }
+        lista.graficar_lista();
+        
+    }
+})
+} catch (error) {}
 
 try {
     var contenido = localStorage.getItem("json_clasificaciones");
     var json = JSON.parse(contenido);
+    var lista = new Lista_tabla();
+for (let index = 0; index < 20; index++) {
+    lista.insertar();            
+}
        
         
         for (var i = 0; i < json.length; i++) {
@@ -154,29 +189,6 @@ try {
     console.log(error);
 }
 
-var formulario = document.getElementById("lienzo3");
 
-formulario.addEventListener('submit', function(e){
-    e.preventDefault();
-    
-    //recibir documento de formulario
-    let file = document.querySelector('#file5');
-    let reader = new FileReader();
-    reader.readAsText(file.files[0]);
-    reader.onload = function(e){
-        let contenido = e.target.result;
-        var json = JSON.parse(contenido);
-        localStorage.setItem("json_clasificaciones", contenido);
-        
-        for (var i = 0; i < json.length; i++) {
-            
-                lista.calcular_insercion(json[i].id_categoria, json[i].company);
-        
-
-        }
-        lista.graficar_lista();
-        
-    }
-})
 
 

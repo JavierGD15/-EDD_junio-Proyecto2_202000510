@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menù con tabs | Html - Css</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                
+
+    
+    
+    
+    
+</head>
+<body>
+    <a href="../index.html" class="cerrar">Cerrar Sesión</a>
+    <div>
+        <button id="descargar" type="button" onclick="descargarImagen()"> Descargar grafo</button>
+    </div>
+     
+       
+    <div class="container" >
+        <div class="lbl-menu" >
+            <label for="radio1">Clientes</label>
+        </div>
+        
+        <div class="content">
+           
+            <input type="radio" name="radio" id="radio1" checked>
+            <div class="tab1" id="lienzo2" >
+                <h2>Clientes</h2>             
+                <br>
+                <script src="//d3js.org/d3.v5.min.js"></script>
+                <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+                <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+                <script src="https://superal.github.io/canvas2image/canvas2image.js "></script>
+                <script type="text/javascript" src="../js/lista_usuarios.js"></script>  
+                <br>
+                <script src="https://superal.github.io/canvas2image/canvas2image.js "></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <form  id="formulario" >    
+                    
+                    <input type="file"   type="file" id="file" accept=".json">
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                </form>  
+
+                <button class="btn btn-primary" type="submit" onclick="descargarImagen()">Descargar</button>
+
+                
+                                                   
+            </div>
+        </div>
+           
+</body>
+<script>
+    function descargarImagen() {
+        html2canvas($('#lienzo2')[0]).then(function (canvas) {
+            return Canvas2Image.saveAsPNG(canvas);
+            $(".response").append(canvas);
+        });
+    }
+
+  
+</script>
+</html>    

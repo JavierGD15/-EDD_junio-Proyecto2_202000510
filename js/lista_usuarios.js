@@ -64,9 +64,10 @@ class Lista {
 
         codigodot += "{rank=same;\n"+recto+"\n}\n";
         codigodot += "}";
-        console.log(codigodot);
+        
         d3.select("#lienzo2").graphviz()
         .renderDot(codigodot)
+        
     }
 
    
@@ -144,4 +145,9 @@ formulario.addEventListener('submit', function(e){
 
 
 })
+
+
+
+
+
 

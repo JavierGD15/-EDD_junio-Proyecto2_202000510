@@ -230,7 +230,7 @@ class Node {
           let btn1 = document.createElement("button");
           btn1.innerHTML = "Alquilar";
           btn1.setAttribute("type", "submit");         
-          btn1.setAttribute("onclick", "pila()");
+          btn1.setAttribute("onclick", "pila("+inicio.id_pelicula+")");
           cell8.appendChild(btn1);    
 
           let cell4 = tblDatos.insertCell(-1);            
@@ -309,6 +309,7 @@ class Node {
     if(inicio.valor == id_pelicula){
       
       this.gurdar_info(inicio);
+      this.llenar_info(inicio);
     }else{
       if(inicio.izquierda != null){
         this.buscar_nodo_devolver(inicio.izquierda, id_pelicula);
@@ -375,7 +376,7 @@ class Node {
           let btn1 = document.createElement("button");
           btn1.innerHTML = "Alquilar";
           btn1.setAttribute("type", "submit");         
-          btn1.setAttribute("onclick", "pila()");
+          btn1.setAttribute("onclick", "pila("+inicio.id_pelicula+")");
           cell8.appendChild(btn1);    
 
           let cell4 = tblDatos.insertCell(-1);            
@@ -416,7 +417,7 @@ class Node {
        let btn1 = document.createElement("button");
        btn1.innerHTML = "Alquilar";
        btn1.setAttribute("type", "submit");         
-       btn1.setAttribute("onclick", "pila()");
+       btn1.setAttribute("onclick", "pila("+inicio.id_pelicula+")");
        cell8.appendChild(btn1);    
 
        let cell4 = tblDatos.insertCell(-1);            
@@ -426,10 +427,12 @@ class Node {
 
 
   //esta malo
-  llenar_info(nodo){
+  llenar_info(){
     var local = localStorage.getItem("json_info");    
-    var json = JSON.parse(local);            
-    this.buscar_nodo(this.root, json[0].id_pelicula, false);
+    var json = JSON.parse(local);
+    for (var i = 0; i < json.length; i++) {
+      
+
     
     
     let tblDatos = document.getElementById("tblinfo").insertRow(-1);    
@@ -437,38 +440,38 @@ class Node {
     let cell1 = tblDatos.insertCell(-1);    
     let cell3 = tblDatos.insertCell(-1);   
     
-    cell1.innerHTML = nodo.nombre_pelicula;
-    cell3.innerHTML = nodo.descripcion;
+    cell1.innerHTML = json[i].nombre_pelicula;
+    cell3.innerHTML = json[i].descripcion;
 
-    if(nodo.puntuacion_star == 1){
+    if(json[i].puntuacion_star == 1){
     let cellImg = tblDatos.insertCell(-1);
     let img = document.createElement("img");
     img.src = "../img/one.png";
     img.width = "300";
     img.height = "80";
     cellImg.appendChild(img);
-    } else if(nodo.puntuacion_star == 2){
+    } else if(json[i].puntuacion_star == 2){
     let cellImg = tblDatos.insertCell(-1);
     let img = document.createElement("img");
     img.src = "../img/two.png";
     img.width = "300";
     img.height = "80";
     cellImg.appendChild(img);
-    } else if(nodo.puntuacion_star == 3){
+    } else if(json[i].puntuacion_star == 3){
     let cellImg = tblDatos.insertCell(-1);
     let img = document.createElement("img");
     img.src = "../img/three.png";
     img.width = "300";
     img.height = "80";
     cellImg.appendChild(img);
-    } else if(nodo.puntuacion_star == 4){
+    } else if(json[i].puntuacion_star == 4){
     let cellImg = tblDatos.insertCell(-1);
     let img = document.createElement("img");
     img.src = "../img/four.png";
     img.width = "300";
     img.height = "80";
     cellImg.appendChild(img);
-    } else if(nodo.puntuacion_star == 5){
+    } else if(json[i].puntuacion_star == 5){
     let cellImg = tblDatos.insertCell(-1);
     let img = document.createElement("img");
     img.src = "../img/five.png";
@@ -481,11 +484,12 @@ class Node {
     let btn1 = document.createElement("button");
     btn1.innerHTML = "Alquilar";
     btn1.setAttribute("type", "submit");         
-    btn1.setAttribute("onclick", "pila()");
+    btn1.setAttribute("onclick", "pila("+json[i].id_pelicula+")");
     cell8.appendChild(btn1);    
 
     let cell4 = tblDatos.insertCell(-1);            
-    cell4.innerHTML = "Q"+nodo.precio_Q;
+    cell4.innerHTML = "Q"+json[i].precio_Q;
+    }
 
     
   }
@@ -503,6 +507,46 @@ class Node {
     localStorage.setItem("json_info", JSON.stringify(enviar));
     location.href = "../templates/vista_pelicula.html";
   
+  }
+
+  guardar_alquiler(id){
+    var enviar =[]
+    var enviar1 ={}
+
+    var local = localStorage.getItem("json_peliculas");
+    var json = JSON.parse(local);
+    
+    for(var i = 0; i < json.length; i++){
+      if(json[i].id_pelicula == id){
+        console.log(json[i]);
+        var alquiladas = localStorage.getItem("json_alquiler");
+
+        var usuario = localStorage.getItem("usuario_activo");
+        if(alquiladas == null){
+          
+        enviar1.nombre_pelicula = json[i].nombre_pelicula;
+        enviar1.usuario = usuario;
+        enviar.push(enviar1);
+        localStorage.setItem("json_alquiler", JSON.stringify(enviar));
+        
+          location.reload();
+          break
+        }
+        else{
+          var json1 = JSON.parse(alquiladas);
+          enviar1.nombre_pelicula = json[i].nombre_pelicula;
+          enviar1.usuario = usuario;
+          json1.push(enviar1);
+          localStorage.setItem("json_alquiler", JSON.stringify(json1));
+          //location.href = "../templates/vista_alquiler.html";
+          //recargar
+          location.reload();
+          break
+        }
+      }
+    }
+
+
   }
 
 
@@ -591,6 +635,17 @@ function setRadio(name, value) {
 
     
   
+function Informacion(nodo){  
+  console.log(nodo);
+  arbol1.buscar_nodo_devolver(null, nodo);
+}
+
+function pila(nombre){  
+  console.log(nombre);
+  arbol1.guardar_alquiler(nombre);
+}
+
+
 
 
 
@@ -625,12 +680,6 @@ formulario.addEventListener('submit', function(e){
 
 })
 
-
-
-function Informacion(nodo){  
-  console.log(nodo);
-  arbol1.buscar_nodo_devolver(null, nodo);
-}
 
 
 

@@ -297,13 +297,17 @@ var ArbolMerkle = (function () {
         this.preOrden(this.raiz);
     };
 
+    ArbolMerkle.prototype.mostrar = function () {
+
+    };
+
 
 
     ArbolMerkle.prototype.preOrden = function (raiz) {
 
         if (raiz != null) {
             this.texto = "";
-            var codigodot = "digraph G{\n  \nlabel=\" Autores-Arbol \";\n";
+            var codigodot = "digraph G{\n graph[size = \"11.70,6.25\" ] \nlabel=\" Autores-Arbol \";\n";
             
             var derecha = this.root;
             var ayuda_texto = "";
@@ -341,9 +345,7 @@ var ArbolMerkle = (function () {
     };
 
     ArbolMerkle.prototype.preOrden1 = function (raiz) {
-        
-            console.log("raiz.hash");
-
+        if(raiz.hash > 0){
             var ayuda_texto = "";
             var x = 0;
             for (var i = 0; i < raiz.hash.length; i++) {
@@ -356,7 +358,8 @@ var ArbolMerkle = (function () {
                     x++;
                 }
                 
-            }            
+            }
+            
 
             this.texto += raiz.hash + " [label=\"" + ayuda_texto + "\"];";
             if (raiz.izquierdo != null) {
@@ -369,7 +372,7 @@ var ArbolMerkle = (function () {
                 this.preOrden1(raiz.derecho);
                 
             }
-        
+        }
 
         
     };
@@ -379,36 +382,14 @@ var ArbolMerkle = (function () {
 }());
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var arbol = new ArbolMerkle();
-arbol.insertar("hola mundo");
-arbol.insertar("2");
-arbol.insertar("3");
-arbol.insertar("4");
-arbol.insertar("5");
-arbol.insertar("6");
-arbol.insertar("7");
-arbol.insertar("8");
-arbol.insertar("9");
-arbol.insertar("10");
+var compras = localStorage.getItem('json_alquiler');
+var json = JSON.parse(compras);
+
+for (var i = 0; i < json.length; i++) {
+    var texto = json[i].nombre_pelicula +""+ json[i].usuario
+    arbol.insertar(texto);
+}
 arbol.print();
 
 
